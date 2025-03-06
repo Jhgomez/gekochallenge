@@ -2,9 +2,13 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.0"
+}
+
+hilt {
+    enableAggregatingTask = false
 }
 
 android {
@@ -52,7 +56,10 @@ dependencies {
     ksp("androidx.room:room-compiler:$room_version")
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
-
+    //taken from here https://developer.android.com/jetpack/androidx/releases/compose-material3-adaptive
+    implementation("androidx.compose.material3.adaptive:adaptive:1.1.0-rc01")
+    implementation("androidx.compose.material3.adaptive:adaptive-layout:1.1.0-rc01")
+    implementation("androidx.compose.material3.adaptive:adaptive-navigation:1.1.0-rc01")
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.kotlinx.serialization.json)
@@ -60,7 +67,6 @@ dependencies {
     implementation(libs.navigation.compose)
     implementation(libs.hilt.compose)
     implementation(libs.dagger.hilt)
-    ksp(libs.dagger.compiler)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -69,6 +75,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    ksp(libs.dagger.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
