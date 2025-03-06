@@ -11,37 +11,34 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.geko.challenge.ui.theme.PruebatecTheme
+import com.geko.challenge.core.data.repository.AuthenticationRepository
+import com.geko.challenge.core.design.theme.PruebatecTheme
+import com.geko.challenge.ui.ChallengeApp
+import com.geko.challenge.ui.rememberAppState
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var authenticationRepository: AuthenticationRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val appState = rememberAppState(
+                authenticationRepository = authenticationRepository
+            )
+
             PruebatecTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
+                    ChallengeApp(
+                        appState = appState,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PruebatecTheme {
-        Greeting("Android")
     }
 }
