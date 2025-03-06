@@ -1,6 +1,5 @@
 package com.geko.challenge.domain
 
-import android.provider.ContactsContract.CommonDataKinds.Email
 import com.geko.challenge.core.data.common.DataResult
 import com.geko.challenge.core.data.repository.AuthenticationRepository
 import com.geko.challenge.core.model.User
