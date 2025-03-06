@@ -1,4 +1,4 @@
-package com.geko.challenge.ui.theme
+package com.geko.challenge.core.theme
 
 import android.app.Activity
 import android.os.Build
