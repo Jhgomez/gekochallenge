@@ -15,10 +15,16 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-interface NetworkModule {
+internal object NetworkModule {
     @Provides
     @Singleton
     fun okHttpCallFactory(): Call.Factory = OkHttpClient.Builder().build()
+
+    @Provides
+    @Singleton
+    fun providesNetworkJson(): Json = Json {
+        ignoreUnknownKeys = true
+    }
 
     @Provides
     @Singleton
@@ -27,7 +33,7 @@ interface NetworkModule {
         okhttpCallFactory: dagger.Lazy<Call.Factory>,
     ): RetrofitNetworkApi =
         Retrofit.Builder()
-            .baseUrl("URL")
+            .baseUrl("https://fakeone")
             .callFactory { okhttpCallFactory.get().newCall(it) }
             .addConverterFactory(
                 json.asConverterFactory("application/json".toMediaType()),
