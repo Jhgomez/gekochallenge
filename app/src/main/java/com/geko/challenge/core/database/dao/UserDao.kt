@@ -5,23 +5,16 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.geko.challenge.core.database.model.UserEntity
-import com.geko.challenge.core.network.model.NetworkUser
 
 @Dao
 interface UserDao {
-//    @Query("SELECT * FROM user")
-//    fun getAll(): List<User>
-//
-//    @Query("SELECT * FROM user WHERE uid IN (:userIds)")
-//    fun loadAllByIds(userIds: IntArray): List<User>
-//
-//    @Query("SELECT * FROM user WHERE first_name LIKE :first AND " +
-//            "last_name LIKE :last LIMIT 1")
-//    fun findByName(first: String, last: String): User
+    @Query("SELECT * FROM user WHERE name LIKE :name LIMIT 1")
+    fun findByName(name: String): UserEntity
 
     @Insert
-    fun insertAll(user: UserEntity)
+    fun insert(user: UserEntity)
 
-    @Delete
-    fun delete()
+
+    @Query("DELETE FROM user WHERE name LIKE :name")
+    fun delete(name: String)
 }
