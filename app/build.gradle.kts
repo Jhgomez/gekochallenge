@@ -43,13 +43,14 @@ android {
 }
 
 dependencies {
+    implementation ("androidx.datastore:datastore-preferences:1.1.3")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation(libs.navigation.compose)
     implementation(libs.hilt.compose)
     implementation(libs.dagger.hilt)
-    implementation(libs.dagger.compiler)
+    ksp(libs.dagger.compiler)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
