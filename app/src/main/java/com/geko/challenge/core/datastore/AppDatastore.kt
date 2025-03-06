@@ -26,7 +26,7 @@ class AppDatastore @Inject constructor(
                 settings[isUserLoggedInKey] = isLoggedIn
             }
         } catch (ioException: IOException) {
-            Log.e("NiaPreferences", "Failed to update user preferences", ioException)
+            Log.e("AppDatastore", "Failed to update user preferences", ioException)
         }
     }
 }
