@@ -1,11 +1,6 @@
 package com.geko.challenge.core.data.repository
 
-import android.content.Context
 import android.util.Log
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.viewModelScope
 import com.geko.challenge.core.common.di.IoDispatcher
 import com.geko.challenge.core.data.common.DataResult
 import com.geko.challenge.core.data.model.toUserEntity
@@ -16,13 +11,9 @@ import com.geko.challenge.core.datastore.AppDatastore
 import com.geko.challenge.core.model.User
 import com.geko.challenge.core.network.retrofit.RetrofitNetworkApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.w3c.dom.Entity
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
-
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class AuthenticationRepository @Inject constructor(
     private val store: AppDatastore,
