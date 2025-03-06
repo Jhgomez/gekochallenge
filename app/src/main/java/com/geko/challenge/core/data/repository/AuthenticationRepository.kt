@@ -23,7 +23,7 @@ class AuthenticationRepository @Inject constructor(
 ) {
     private var alternative_result: Boolean? = true
 
-    suspend fun isAuthenticated(): Flow<Boolean> = store.isUserLoggedIn
+    val isAuthenticated: Flow<Boolean> = store.isUserLoggedIn
 
     private suspend fun setIsAuthenticated(authenticated: Boolean) {
         store.setIsUserLoggedIn(authenticated)
