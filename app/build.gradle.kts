@@ -48,6 +48,7 @@ android {
 
 dependencies {
     val room_version = "2.6.1"
+    implementation("androidx.core:core-splashscreen:1.0.0")
 
     implementation("androidx.room:room-runtime:$room_version")
 
