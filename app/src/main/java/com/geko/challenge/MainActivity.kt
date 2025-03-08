@@ -6,12 +6,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
@@ -46,18 +51,22 @@ class MainActivity : ComponentActivity() {
             val appState = rememberAppState()
 
             PruebatecTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-                    val state = uiState.value
+                val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+                val state = uiState
 
-                    when (state) {
-                        MainActivityUiState.Loading -> {} // no need to do anything as splash screen is kept while state is loading
-                        is MainActivityUiState.Success -> ChallengeApp(
-                            appState = appState,
-                            modifier = Modifier.padding(innerPadding),
-                            isAuthenticated = state.isAuthenticated
-                        )
+                when(state) {
+                    MainActivityUiState.Loading -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
                     }
+                    is MainActivityUiState.Success -> ChallengeApp(
+                        appState = appState,
+                        isAuthenticated = state.isAuthenticated
+                    )
                 }
             }
         }
