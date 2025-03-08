@@ -8,15 +8,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.LocalLifecycleOwner
-
 
 @Composable
 fun ColumnScope.Login(
     onLoginClick: (String, String) -> Unit,
     onSignUpClick: () -> Unit,
     onShowSnackbar: suspend (String) -> Unit,
-    onUserAutheticated: (userName: String) -> Unit,
     uiState: LoginUiState,
     uiEvent: LoginLogicUiEvent?,
 ) {
@@ -33,7 +30,6 @@ fun ColumnScope.Login(
                 value = email,
                 onValueChange = {
                     email = it
-//                emailError = !Patterns.EMAIL_ADDRESS.matcher(it).matches()
                 },
                 label = { Text("Email") },
                 isError = uiState.emailError,
@@ -96,7 +92,6 @@ fun ColumnScope.Login(
     }
 
     when(uiEvent) {
-        is LoginLogicUiEvent.NavigateToUserScreen -> onUserAutheticated(uiEvent.userName)
         is LoginLogicUiEvent.ShowSnackBar ->  LaunchedEffect(uiEvent.effectToggle) {
             onShowSnackbar(uiEvent.message)
         }
