@@ -5,14 +5,12 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.geko.challenge.core.data.repository.AuthenticationRepository
-import kotlinx.coroutines.CoroutineScope
-
+import com.geko.challenge.feature.login.navigation.LoginRoute
+import com.geko.challenge.feature.user.navigation.UserRoute
 
 @Composable
 fun rememberAppState(
@@ -45,5 +43,19 @@ class AppState(
                     previousDestination.value = destination
                 }
             } ?: previousDestination.value
+        }
+
+    private val screensWithNoToolbar = listOf(
+        LoginRoute::class,
+        UserRoute::class
+    )
+
+    val shouldShowTopBar: Boolean
+        @Composable get() {
+            val result = screensWithNoToolbar.firstOrNull { route ->
+                currentDestination?.hasRoute(route = route) == true
+            }
+
+            return result == null
         }
 }

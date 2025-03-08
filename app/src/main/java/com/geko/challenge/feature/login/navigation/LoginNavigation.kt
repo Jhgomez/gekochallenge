@@ -20,13 +20,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import com.applaudo.androidchallenge01.ui.screen.home.LoginScreen
 import kotlinx.serialization.Serializable
 
 @Serializable data object LoginRoute // route to ForYou screen
-
-@Serializable data object LoginBaseRoute // route to base navigation graph
 
 fun NavController.navigateToLogin(navOptions: NavOptions) = navigate(route = LoginRoute, navOptions)
 
@@ -34,9 +31,7 @@ fun NavGraphBuilder.loginScreen(
     onSignUpClick:() -> Unit,
     onShowSnackbar: suspend (String) -> Unit,
 ) {
-    navigation<LoginBaseRoute>(startDestination = LoginRoute) {
-        composable<LoginRoute> {
-            LoginScreen(onSignUpClick, onShowSnackbar)
-        }
+    composable<LoginRoute> {
+        LoginScreen(onSignUpClick, onShowSnackbar)
     }
 }

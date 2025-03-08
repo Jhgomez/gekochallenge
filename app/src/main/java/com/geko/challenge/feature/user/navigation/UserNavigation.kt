@@ -20,20 +20,16 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import com.geko.challenge.feature.user.UserScreen
 import kotlinx.serialization.Serializable
 
 @Serializable data object UserRoute // route to ForYou screen
 
-@Serializable data object UserBaseRoute // route to base navigation graph
 
 fun NavController.navigateToUser(navOptions: NavOptionsBuilder.() -> Unit = {}) = navigate(route = UserRoute, navOptions)
 
 fun NavGraphBuilder.userScreen() {
-    navigation<UserBaseRoute>(startDestination = UserRoute) {
-        composable<UserRoute> {
-            UserScreen()
-        }
+    composable<UserRoute> {
+        UserScreen()
     }
 }

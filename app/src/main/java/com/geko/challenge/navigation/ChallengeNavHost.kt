@@ -3,9 +3,9 @@ package com.geko.challenge.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import com.geko.challenge.feature.login.navigation.LoginBaseRoute
+import com.geko.challenge.feature.login.navigation.LoginRoute
 import com.geko.challenge.feature.login.navigation.loginScreen
-import com.geko.challenge.feature.user.navigation.UserBaseRoute
+import com.geko.challenge.feature.user.navigation.UserRoute
 import com.geko.challenge.feature.user.navigation.userScreen
 import com.geko.challenge.ui.AppState
 
@@ -20,14 +20,16 @@ fun ChallengeNavhost (
     val navController = appState.navController
     NavHost(
         navController = navController,
-        startDestination = if (isAuthenticated)  UserBaseRoute else LoginBaseRoute,
+        startDestination = if (isAuthenticated)  UserRoute else LoginRoute,
         modifier = modifier,
     ) {
-        loginScreen(
-            onSignUpClick = {}, //navcontroller::navigateToSignUp
-            onShowSnackbar = onShowSnackbar
-        )
-
-        userScreen()
+        if (isAuthenticated) {
+            userScreen()
+        } else {
+            loginScreen(
+                onSignUpClick = {}, //navcontroller::navigateToSignUp
+                onShowSnackbar = onShowSnackbar
+            )
+        }
     }
 }
