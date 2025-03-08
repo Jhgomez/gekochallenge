@@ -10,7 +10,6 @@ import com.geko.challenge.core.database.model.UserEntity
 import com.geko.challenge.core.datastore.AppDatastore
 import com.geko.challenge.core.model.User
 import com.geko.challenge.core.network.retrofit.RetrofitNetworkApi
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
@@ -23,7 +22,7 @@ class AuthenticationRepository @Inject constructor(
 ) {
     private var alternative_result: Boolean? = true
 
-    val isAuthenticated: Flow<Boolean> = store.isUserLoggedIn
+    val isAuthenticated = store.isUserLoggedIn
 
     private suspend fun setIsAuthenticated(authenticated: Boolean) {
         store.setIsUserLoggedIn(authenticated)
