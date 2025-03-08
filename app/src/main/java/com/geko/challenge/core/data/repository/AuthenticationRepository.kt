@@ -44,7 +44,7 @@ class AuthenticationRepository @Inject constructor(
             val entity = result.data.toUserEntity()
             userDao.insert(entity)
 
-            return@withContext DataResult.Success(userDao.findByName("Usuario").toUserModel())
+            return@withContext DataResult.Success(userDao.getUser().toUserModel())
         } catch (e: Exception) {
 
             return@withContext when(alternative_result) {
@@ -52,9 +52,9 @@ class AuthenticationRepository @Inject constructor(
                     // means user logged in
                     alternative_result = false
                     setIsAuthenticated(true)
-                    userDao.insert(UserEntity(name = "Usuario"))
+                    userDao.insert(UserEntity(name = "Juan"))
 
-                    DataResult.Success(userDao.findByName("Usuario").toUserModel())
+                    DataResult.Success(userDao.getUser().toUserModel())
                 }
                 false -> {
                     // means http error like wrong credentials
@@ -129,7 +129,7 @@ class AuthenticationRepository @Inject constructor(
             val entity = result.data.toUserEntity()
             userDao.insert(entity)
 
-            return@withContext DataResult.Success(userDao.findByName("Usuario").toUserModel())
+            return@withContext DataResult.Success(userDao.findByName(firstName).toUserModel())
         } catch (e: Exception) {
 
             return@withContext when(alternative_result) {
@@ -137,9 +137,9 @@ class AuthenticationRepository @Inject constructor(
                     // means user logged in
                     alternative_result = false
                     setIsAuthenticated(true)
-                    userDao.insert(UserEntity(name = "Usuario"))
+                    userDao.insert(UserEntity(name = firstName))
 
-                    DataResult.Success(userDao.findByName("Usuario").toUserModel())
+                    DataResult.Success(userDao.findByName(firstName).toUserModel())
                 }
                 false -> {
                     // means http error like wrong credentials
@@ -162,7 +162,11 @@ class AuthenticationRepository @Inject constructor(
     suspend fun logout() = withContext(ioDispatcher) {
         try {
             apiService.logout()
+            setIsAuthenticated(false)
+            userDao.delete()
         } catch (e: Exception) {
+            setIsAuthenticated(false)
+            userDao.delete()
             Log.d("AuthRepo", "User logged out")
         }
     }

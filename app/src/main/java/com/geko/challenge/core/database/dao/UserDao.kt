@@ -11,10 +11,12 @@ interface UserDao {
     @Query("SELECT * FROM user WHERE name LIKE :name LIMIT 1")
     fun findByName(name: String): UserEntity
 
+    @Query("SELECT * FROM USER LIMIT 1")
+    fun getUser(): UserEntity
+
     @Insert
     fun insert(user: UserEntity)
 
-
-    @Query("DELETE FROM user WHERE name LIKE :name")
-    fun delete(name: String)
+    @Query("DELETE FROM user")
+    fun delete()
 }
