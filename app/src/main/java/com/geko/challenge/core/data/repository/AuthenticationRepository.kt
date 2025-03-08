@@ -20,7 +20,7 @@ class AuthenticationRepository @Inject constructor(
     private val userDao: UserDao,
     @IoDispatcher private val ioDispatcher: CoroutineContext
 ) {
-    private var alternative_result: Boolean? = true
+    private var alternative_result: Boolean? = false
 
     val isAuthenticated = store.isUserLoggedIn
 
