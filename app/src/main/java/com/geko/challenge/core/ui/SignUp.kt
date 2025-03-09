@@ -6,7 +6,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 
@@ -33,15 +37,28 @@ fun ColumnScope.SignUp(
             var lastName by rememberSaveable { mutableStateOf("") }
             var email by rememberSaveable { mutableStateOf("") }
             var password by rememberSaveable { mutableStateOf("") }
+
             var emailError by rememberSaveable { mutableStateOf(false) }
             var passwordError by rememberSaveable { mutableStateOf(false) }
+
+
+            val requiredStar = buildAnnotatedString {
+                append("First Name ")
+                withStyle(style = SpanStyle(Color.Red)) {
+                    append("*")
+                }
+            }
 
             OutlinedTextField(
                 value = firstName,
                 onValueChange = {
                     firstName = it
                 },
-                label = { Text("First Name") },
+                label = {
+                    Text(
+                        buildAnnotatedString { append("First Name ") }.plus(requiredStar)
+                    )
+                },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -53,7 +70,11 @@ fun ColumnScope.SignUp(
                 onValueChange = {
                     lastName = it
                 },
-                label = { Text("Last Name") },
+                label = {
+                    Text(
+                        buildAnnotatedString { append("Last Name ") }.plus(requiredStar)
+                    )
+                },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -63,10 +84,16 @@ fun ColumnScope.SignUp(
             OutlinedTextField(
                 value = email,
                 onValueChange = {
-                    if (emailError) emailError = !emailError
                     email = it
+
+                    emailError =
+                        !Patterns.EMAIL_ADDRESS.matcher(email).matches()
                 },
-                label = { Text("Email") },
+                label = {
+                    Text(
+                        buildAnnotatedString { append("Email ") }.plus(requiredStar)
+                    )
+                },
                 isError = emailError,
                 singleLine = true,
                 supportingText = @Composable {
@@ -84,10 +111,16 @@ fun ColumnScope.SignUp(
             OutlinedTextField(
                 value = password,
                 onValueChange = {
-                    if(passwordError) passwordError = !passwordError
                     password = it
+
+                    passwordError = !password
+                        .matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{6,}".toRegex())
                 },
-                label = { Text("Password") },
+                label = {
+                    Text(
+                        buildAnnotatedString { append("Password ") }.plus(requiredStar)
+                    )
+                },
                 isError = passwordError,
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation(),
@@ -106,18 +139,17 @@ fun ColumnScope.SignUp(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            val buttonEnable = password.isNotEmpty() && email.isNotEmpty()
+                    && !emailError && !passwordError
+                    && firstName.isNotEmpty() && lastName.isNotEmpty()
+
             Button(
                 onClick = {
-                    emailError =
-                        !Patterns.EMAIL_ADDRESS.matcher(email).matches()
-
-                    passwordError = !password
-                        .matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z\\d]).{6,}".toRegex())
-
-                    if (!emailError && !passwordError) {
+//                    if () {
                         onRegister(firstName, lastName, email, password)
-                    }
+//                    }
                 },
+                enabled = buttonEnable,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Register")
