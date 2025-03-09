@@ -21,31 +21,37 @@ class LoginViewModel @Inject constructor(
     private val _uiEvent: MutableStateFlow<LoginLogicUiEvent?> = MutableStateFlow(null)
     val uiEvent: StateFlow<LoginLogicUiEvent?> = _uiEvent.asStateFlow()
 
-    private val _uiState: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState.Success)
+    private val _uiState: MutableStateFlow<LoginUiState> = MutableStateFlow(LoginUiState.Success())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
     fun login(email: String, password: String) {
         viewModelScope.launch {
-            when (
-                val result = loginUseCase.invoke(email, password)
-            ) {
-                is UseCaseResult.Failed -> {
-                    val event = _uiEvent.value
-                    _uiEvent.value = LoginLogicUiEvent.ShowSnackBar(
-                        result.error,
-                        if (event is LoginLogicUiEvent.ShowSnackBar) {
-                            !(event.effectToggle ?: false)
-                        } else {
-                            null
-                        }
-                    )
-                }
-                is UseCaseResult.Succeed -> {
-                    // no need to anything as if user authenticates then app state changes,
-                    // it is not this view state that changes
+            val state = _uiState.value
+
+            if (state is LoginUiState.Success) {
+                _uiState.value = state.copy(isLoading = true)
+                when (
+                    val result = loginUseCase.invoke(email, password)
+                ) {
+                    is UseCaseResult.Failed -> {
+                        _uiState.value = state.copy(isLoading = false)
+                        val event = _uiEvent.value
+                        _uiEvent.value = LoginLogicUiEvent.ShowSnackBar(
+                            result.error,
+                            if (event is LoginLogicUiEvent.ShowSnackBar) {
+                                !(event.effectToggle ?: false)
+                            } else {
+                                null
+                            }
+                        )
+                    }
+                    is UseCaseResult.Succeed -> {
+                        _uiState.value = state.copy(isLoading = false)
+                        // no need to navigate as if user authenticates then app state changes,
+                        // meaning it is not this view's state that changes
+                    }
                 }
             }
-
         }
     }
 }
