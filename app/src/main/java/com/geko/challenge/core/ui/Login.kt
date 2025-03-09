@@ -114,7 +114,9 @@ fun ColumnScope.Login(
 sealed interface LoginUiState {
     data object Loading : LoginUiState
 
-    data object Success : LoginUiState
+    data class Success(
+        val isLoading: Boolean = false
+    ) : LoginUiState
 }
 
 sealed interface LoginLogicUiEvent {

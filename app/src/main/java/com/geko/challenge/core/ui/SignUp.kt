@@ -46,7 +46,7 @@ fun ColumnScope.SignUp(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
                 value = lastName,
@@ -58,7 +58,7 @@ fun ColumnScope.SignUp(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             OutlinedTextField(
                 value = email,
@@ -69,7 +69,6 @@ fun ColumnScope.SignUp(
                 label = { Text("Email") },
                 isError = emailError,
                 singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
                 supportingText = @Composable {
                     if (emailError) {
                         Text(
@@ -82,13 +81,11 @@ fun ColumnScope.SignUp(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
-
             OutlinedTextField(
                 value = password,
                 onValueChange = {
+                    if(passwordError) passwordError = !passwordError
                     password = it
-                    passwordError = it.length < 6
                 },
                 label = { Text("Password") },
                 isError = passwordError,
@@ -138,7 +135,9 @@ fun ColumnScope.SignUp(
 sealed interface SignUpUiState {
     data object Loading : SignUpUiState
 
-    data object Success: SignUpUiState
+    data class Success(
+        val isLoading: Boolean = false
+    ): SignUpUiState
 }
 
 sealed interface SignUpLogicUiEvent
