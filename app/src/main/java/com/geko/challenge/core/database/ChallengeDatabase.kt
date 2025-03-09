@@ -26,6 +26,7 @@ import com.geko.challenge.core.database.model.UserEntity
         UserEntity::class,
     ],
     version = 1,
+    exportSchema = false
 )
 internal abstract class ChallengeDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
