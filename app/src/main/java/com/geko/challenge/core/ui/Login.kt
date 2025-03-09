@@ -1,5 +1,6 @@
 package com.geko.challenge.core.ui
 
+import android.util.Patterns
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -25,17 +26,20 @@ fun ColumnScope.Login(
         is LoginUiState.Success -> {
             var email by rememberSaveable { mutableStateOf("") }
             var password by rememberSaveable { mutableStateOf("") }
+            var emailError by rememberSaveable { mutableStateOf(false) }
+            var passwordError by rememberSaveable { mutableStateOf(false) }
 
             OutlinedTextField(
                 value = email,
                 onValueChange = {
+                    if (emailError) emailError = false
                     email = it
                 },
                 label = { Text("Email") },
-                isError = uiState.emailError,
+                isError = emailError,
                 singleLine = true,
                 supportingText = @Composable {
-                    if (uiState.emailError) {
+                    if (emailError) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
                             text = "Enter valid email",
@@ -51,18 +55,18 @@ fun ColumnScope.Login(
             OutlinedTextField(
                 value = password,
                 onValueChange = {
+                    if (passwordError) passwordError = false
                     password = it
-//                passwordError = it.length < 6
                 },
                 label = { Text("Password") },
-                isError = uiState.passwordError,
+                isError = passwordError,
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation(),
                 supportingText = @Composable {
-                    if (uiState.passwordError) {
+                    if (passwordError) {
                         Text(
                             modifier = Modifier.fillMaxWidth(),
-                            text = "Enter valid email",
+                            text = "Please enter your password",
                             color = MaterialTheme.colorScheme.error
                         )
                     }
@@ -73,7 +77,14 @@ fun ColumnScope.Login(
             Spacer(modifier = Modifier.height(16.dp))
 
             Button(
-                onClick = { onLoginClick(email, password) },
+                onClick = {
+                    emailError =
+                        !Patterns.EMAIL_ADDRESS.matcher(email).matches()
+
+                    passwordError = password.isEmpty()
+
+                    if (!emailError && !passwordError) onLoginClick(email, password)
+                },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Login")
@@ -103,20 +114,13 @@ fun ColumnScope.Login(
 sealed interface LoginUiState {
     data object Loading : LoginUiState
 
-    data class Success(
-        val emailError: Boolean,
-        val passwordError: Boolean
-    ) : LoginUiState
+    data object Success : LoginUiState
 }
 
 sealed interface LoginLogicUiEvent {
     data class ShowSnackBar(
         val message: String,
         val effectToggle: Boolean?
-    ) : LoginLogicUiEvent
-
-    data class NavigateToUserScreen(
-        val userName: String
     ) : LoginLogicUiEvent
 }
 
