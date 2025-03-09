@@ -35,6 +35,7 @@ android {
                 "proguard-rules.pro"
             )
         }
+
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -48,20 +49,26 @@ android {
     }
 }
 
-dependencies {
-    val room_version = "2.6.1"
-    implementation("androidx.core:core-splashscreen:1.0.0")
+// https://github.com/JetBrains/kotlin/blob/master/plugins/compose/design/compiler-metrics.md
+// ./gradlew assembleRelease -PenableComposeCompilerMetrics=true -PenableComposeCompilerReports=true
+composeCompiler {
+    reportsDestination = layout.buildDirectory.dir("compose-reports")
+    metricsDestination = layout.buildDirectory.dir("compose-reports")
+}
 
-    implementation("androidx.room:room-runtime:$room_version")
+dependencies {
+    implementation(libs.androidx.core.splashscreen)
+
+    implementation(libs.androidx.room.runtime)
 
     // If this project uses any Kotlin source, use Kotlin Symbol Processing (KSP)
     // See Add the KSP plugin to your project
-    ksp("androidx.room:room-compiler:$room_version")
+    ksp(libs.androidx.room.compiler)
     // optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:$room_version")
+    implementation(libs.androidx.room.ktx)
     //taken from here https://developer.android.com/jetpack/androidx/releases/compose-material3-adaptive
-    implementation("androidx.compose.material3.adaptive:adaptive:1.1.0-rc01")
-    implementation("androidx.compose.material3.adaptive:adaptive-layout:1.1.0-rc01")
+    implementation(libs.androidx.adaptive)
+    implementation(libs.androidx.adaptive.layout)
     implementation("androidx.compose.material3.adaptive:adaptive-navigation:1.1.0-rc01")
     implementation(libs.androidx.datastore.preferences)
     implementation(libs.retrofit2.kotlinx.serialization.converter)
