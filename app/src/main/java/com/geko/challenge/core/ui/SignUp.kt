@@ -41,6 +41,7 @@ fun ColumnScope.SignUp(
             var emailError by rememberSaveable { mutableStateOf(false) }
             var passwordError by rememberSaveable { mutableStateOf(false) }
 
+            Spacer(modifier = Modifier.height(32.dp))
 
             val requiredStar = buildAnnotatedString {
                 append("First Name ")
@@ -154,6 +155,8 @@ fun ColumnScope.SignUp(
             ) {
                 Text("Register")
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 
