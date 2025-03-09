@@ -5,6 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.geko.challenge.feature.login.navigation.LoginRoute
 import com.geko.challenge.feature.login.navigation.loginScreen
+import com.geko.challenge.feature.signup.navigation.navigateToSignUp
+import com.geko.challenge.feature.signup.navigation.signUpScreen
 import com.geko.challenge.feature.user.navigation.UserRoute
 import com.geko.challenge.feature.user.navigation.userScreen
 import com.geko.challenge.ui.AppState
@@ -27,9 +29,11 @@ fun ChallengeNavhost (
             userScreen()
         } else {
             loginScreen(
-                onSignUpClick = {}, //navcontroller::navigateToSignUp
+                onSignUpClick = navController::navigateToSignUp,
                 onShowSnackbar = onShowSnackbar
             )
+
+            signUpScreen()
         }
     }
 }
