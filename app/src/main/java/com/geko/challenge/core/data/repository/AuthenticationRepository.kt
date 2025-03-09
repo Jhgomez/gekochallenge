@@ -146,7 +146,7 @@ class AuthenticationRepository @Inject constructor(
                     alternative_result = null
                     setIsAuthenticated(false)
 
-                    DataResult.Failed("Bad credentials")
+                    DataResult.Failed("Server error")
                 }
                 else -> {
                     // other errors

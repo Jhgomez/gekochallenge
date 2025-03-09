@@ -31,6 +31,7 @@ fun ColumnScope.SignUp(
     onRegister: registerInfo,
     uiState: SignUpUiState,
     uiEvent: SignUpLogicUiEvent?,
+    onShowSnackbar: suspend (String) -> Unit,
 ) {
     when (uiState) {
         SignUpUiState.Loading -> {
@@ -185,7 +186,9 @@ fun ColumnScope.SignUp(
     }
 
     when(uiEvent) {
-        null -> {}
+        is SignUpLogicUiEvent.onShowSnackBar ->  LaunchedEffect(uiEvent.effectToggle) {
+            onShowSnackbar(uiEvent.message)
+        }
         else -> {}
     }
 }
@@ -199,7 +202,12 @@ sealed interface SignUpUiState {
     ): SignUpUiState
 }
 
-sealed interface SignUpLogicUiEvent
+sealed interface SignUpLogicUiEvent {
+    data class onShowSnackBar(
+        val message: String,
+        val effectToggle: Boolean?
+    ): SignUpLogicUiEvent
+}
 
 @Preview(showBackground = true)
 @Composable

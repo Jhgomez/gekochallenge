@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.geko.challenge.core.ui.LoginLogicUiEvent
 import com.geko.challenge.core.ui.LoginUiState
+import com.geko.challenge.feature.login.LoginViewModel
 
 @Composable
 fun LoginScreen(

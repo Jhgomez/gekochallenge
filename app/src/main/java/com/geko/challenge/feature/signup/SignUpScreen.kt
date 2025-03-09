@@ -1,6 +1,5 @@
 package com.geko.challenge.feature.signup
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,10 +12,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.applaudo.androidchallenge01.ui.screen.home.SignUpViewModel
 import com.geko.challenge.core.ui.SignUp
 import com.geko.challenge.core.ui.SignUpLogicUiEvent
 import com.geko.challenge.core.ui.SignUpUiState
@@ -24,7 +21,8 @@ import com.geko.challenge.core.ui.SignUpUiState
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
-    viewModel: SignUpViewModel = hiltViewModel()
+    viewModel: SignUpViewModel = hiltViewModel(),
+    onShowSnackbar: suspend (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val uiEvent by viewModel.uiEvent.collectAsStateWithLifecycle()
@@ -33,6 +31,7 @@ fun SignUpScreen(
         onRegister = viewModel::register,
         uiState = uiState,
         uiEvent = uiEvent,
+        onShowSnackbar = onShowSnackbar,
         modifier = modifier
     )
 }
@@ -42,7 +41,8 @@ fun SignUpScreenContent(
     onRegister: (String, String, String, String) -> Unit,
     uiState: SignUpUiState,
     uiEvent: SignUpLogicUiEvent?,
-    modifier: Modifier
+    modifier: Modifier,
+    onShowSnackbar: suspend (String) -> Unit
 ) {
     Column(
         modifier = modifier
@@ -55,7 +55,8 @@ fun SignUpScreenContent(
         SignUp(
             onRegister = onRegister,
             uiState = uiState,
-            uiEvent = uiEvent
+            uiEvent = uiEvent,
+            onShowSnackbar = onShowSnackbar
         )
     }
 }

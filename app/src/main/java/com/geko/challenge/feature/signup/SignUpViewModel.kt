@@ -1,4 +1,4 @@
-package com.applaudo.androidchallenge01.ui.screen.home
+package com.geko.challenge.feature.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -38,6 +38,16 @@ class SignUpViewModel @Inject constructor(
                 when(val result = signUpUseCase(firstName, lastName, email, password)) {
                     is UseCaseResult.Failed -> {
                         _UiState.value = state.copy(isLoading = false)
+
+                        val event = _uiEvent.value
+                        _uiEvent.value = SignUpLogicUiEvent.onShowSnackBar(
+                            result.error,
+                            if (event is SignUpLogicUiEvent.onShowSnackBar) {
+                                !(event.effectToggle ?: false)
+                            } else {
+                                null
+                            }
+                        )
                     }
                     is UseCaseResult.Succeed -> {
                         _UiState.value = state.copy(isLoading = false)

@@ -33,7 +33,9 @@ fun ChallengeNavhost (
                 onShowSnackbar = onShowSnackbar
             )
 
-            signUpScreen()
+            signUpScreen(
+                onShowSnackbar = onShowSnackbar
+            )
         }
     }
 }

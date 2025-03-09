@@ -27,8 +27,8 @@ import kotlinx.serialization.Serializable
 
 fun NavController.navigateToSignUp(navOptions: NavOptionsBuilder.() -> Unit = {}) = navigate(route = SignUpRoute, navOptions)
 
-fun NavGraphBuilder.signUpScreen() {
+fun NavGraphBuilder.signUpScreen(onShowSnackbar: suspend (String) -> Unit) {
     composable<SignUpRoute> {
-        SignUpScreen()
+        SignUpScreen(onShowSnackbar = onShowSnackbar)
     }
 }

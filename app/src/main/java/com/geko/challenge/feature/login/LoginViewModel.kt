@@ -1,4 +1,4 @@
-package com.applaudo.androidchallenge01.ui.screen.home
+package com.geko.challenge.feature.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
