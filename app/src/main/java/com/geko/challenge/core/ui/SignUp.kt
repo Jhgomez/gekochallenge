@@ -55,7 +55,6 @@ fun ColumnScope.SignUp(
             Spacer(modifier = Modifier.height(32.dp))
 
             val requiredStar = buildAnnotatedString {
-                append("First Name ")
                 withStyle(style = SpanStyle(Color.Red)) {
                     append("*")
                 }

@@ -2,10 +2,13 @@ package com.geko.challenge.core.ui
 
 import android.util.Patterns
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +32,8 @@ fun ColumnScope.Login(
             var emailError by rememberSaveable { mutableStateOf(false) }
             var passwordError by rememberSaveable { mutableStateOf(false) }
 
+            val keyboardController = LocalSoftwareKeyboardController.current
+
             OutlinedTextField(
                 value = email,
                 onValueChange = {
@@ -38,6 +43,10 @@ fun ColumnScope.Login(
                 label = { Text("Email") },
                 isError = emailError,
                 singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next)
+                ,
                 supportingText = @Composable {
                     if (emailError) {
                         Text(
@@ -62,6 +71,22 @@ fun ColumnScope.Login(
                 isError = passwordError,
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Go
+                ),
+                keyboardActions = KeyboardActions(
+                    onGo = {
+                        keyboardController?.hide()
+
+                        emailError =
+                            !Patterns.EMAIL_ADDRESS.matcher(email).matches()
+
+                        passwordError = password.isEmpty()
+
+                        if (!emailError && !passwordError) onLoginClick(email, password)
+                    }
+                ),
                 supportingText = @Composable {
                     if (passwordError) {
                         Text(
