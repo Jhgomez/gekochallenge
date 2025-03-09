@@ -2,13 +2,18 @@ package com.geko.challenge.core.ui
 
 import android.util.Patterns
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
@@ -41,6 +46,12 @@ fun ColumnScope.SignUp(
             var emailError by rememberSaveable { mutableStateOf(false) }
             var passwordError by rememberSaveable { mutableStateOf(false) }
 
+            val buttonEnable = password.isNotEmpty() && email.isNotEmpty()
+                    && !emailError && !passwordError
+                    && firstName.isNotEmpty() && lastName.isNotEmpty()
+
+            val keyboardController = LocalSoftwareKeyboardController.current
+
             Spacer(modifier = Modifier.height(32.dp))
 
             val requiredStar = buildAnnotatedString {
@@ -60,6 +71,7 @@ fun ColumnScope.SignUp(
                         buildAnnotatedString { append("First Name ") }.plus(requiredStar)
                     )
                 },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -77,6 +89,7 @@ fun ColumnScope.SignUp(
                     )
                 },
                 singleLine = true,
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -97,6 +110,10 @@ fun ColumnScope.SignUp(
                 },
                 isError = emailError,
                 singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
                 supportingText = @Composable {
                     if (emailError) {
                         Text(
@@ -124,6 +141,18 @@ fun ColumnScope.SignUp(
                 },
                 isError = passwordError,
                 singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Go
+                ),
+                keyboardActions = KeyboardActions(
+                    onGo = {
+                        keyboardController?.hide()
+                        if (buttonEnable) {
+                            onRegister(firstName, lastName, email, password)
+                        }
+                    }
+                ),
                 visualTransformation = PasswordVisualTransformation(),
                 supportingText = @Composable {
                     if (passwordError) {
@@ -139,10 +168,6 @@ fun ColumnScope.SignUp(
             )
 
             Spacer(modifier = Modifier.height(16.dp))
-
-            val buttonEnable = password.isNotEmpty() && email.isNotEmpty()
-                    && !emailError && !passwordError
-                    && firstName.isNotEmpty() && lastName.isNotEmpty()
 
             Button(
                 onClick = {
