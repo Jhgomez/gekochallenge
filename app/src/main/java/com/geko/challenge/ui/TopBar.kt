@@ -37,9 +37,6 @@ fun AppToolbar(
                     contentDescription = null,
                 )
             }
-        } else {
-            // Keeps the NiaFilterChip aligned to the end of the Row.
-            Spacer(modifier = Modifier.width(1.dp))
         }
     }
 }
