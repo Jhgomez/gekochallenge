@@ -20,6 +20,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,6 +28,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -67,15 +69,15 @@ fun ChallengeApp(
         },
         topBar = {
             if (appState.shouldShowTopBar) {
-                val px = WindowInsets.safeDrawing.getTop(LocalDensity.current)
-                val dps = with(LocalDensity.current) {
-                    px.toDp()
-                }
-
                 AppToolbar(
-                    modifier = Modifier.fillMaxWidth().height(
-                        dps + 40.dp
-                    ).background(Color.Blue),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colorScheme.primary)
+                        .windowInsetsPadding(
+                            WindowInsets.safeDrawing.only(WindowInsetsSides.Top)
+                        )
+                        .height(40.dp)
+                    ,
                     onBackClick = onBackClick
                 )
             }

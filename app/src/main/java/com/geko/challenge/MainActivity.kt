@@ -51,11 +51,8 @@ class MainActivity : ComponentActivity() {
             val appState = rememberAppState()
 
             PruebatecTheme {
-                val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-                val state = uiState
-
-                when(state) {
-                    MainActivityUiState.Loading -> {
+                when(val uiState = viewModel.uiState.collectAsStateWithLifecycle().value) {
+                    is MainActivityUiState.Loading -> {
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
@@ -65,7 +62,7 @@ class MainActivity : ComponentActivity() {
                     }
                     is MainActivityUiState.Success -> ChallengeApp(
                         appState = appState,
-                        isAuthenticated = state.isAuthenticated
+                        isAuthenticated = uiState.isAuthenticated
                     )
                 }
             }
