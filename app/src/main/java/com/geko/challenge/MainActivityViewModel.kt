@@ -1,11 +1,10 @@
 package com.geko.challenge
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.geko.challenge.core.data.repository.AuthenticationRepository
-import com.geko.challenge.MainActivityUiState.Success
 import com.geko.challenge.MainActivityUiState.Loading
+import com.geko.challenge.MainActivityUiState.Success
+import com.geko.challenge.core.data.repository.AuthenticationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -34,10 +33,4 @@ sealed interface MainActivityUiState {
     data class Success(val isAuthenticated: Boolean) : MainActivityUiState
 
     fun shouldKeepSplashScreen() = this is Loading
-
-    fun isUserAuthenticated() = if (this is Success) {
-        isAuthenticated
-    } else {
-        false
-    }
 }

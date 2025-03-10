@@ -1,21 +1,20 @@
-package com.applaudo.androidchallenge01.ui.screen.home
+package com.geko.challenge.feature.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.geko.challenge.core.ui.Login
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.geko.challenge.core.ui.Login
 import com.geko.challenge.core.ui.LoginLogicUiEvent
 import com.geko.challenge.core.ui.LoginUiState
-import com.geko.challenge.feature.login.LoginViewModel
 
 @Composable
 fun LoginScreen(
