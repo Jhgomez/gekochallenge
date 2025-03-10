@@ -9,7 +9,7 @@ import javax.inject.Inject
 class LoginUseCase @Inject constructor(
     private val authenticationRepository: AuthenticationRepository
 ) {
-    operator suspend fun invoke(email: String, password: String): UseCaseResult<User, String> = when (
+    suspend operator fun invoke(email: String, password: String): UseCaseResult<User, String> = when (
         val result = authenticationRepository.authenticate(email, password)
     ) {
         is DataResult.Success -> UseCaseResult.Succeed(result.data)

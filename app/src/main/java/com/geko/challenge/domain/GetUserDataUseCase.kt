@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetUserDataUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
-    operator suspend fun invoke(): UseCaseResult<User, String> = when (
+    suspend operator fun invoke(): UseCaseResult<User, String> = when (
         val result = userRepository.getUserData()
     ) {
         is DataResult.Success -> UseCaseResult.Succeed(result.data)

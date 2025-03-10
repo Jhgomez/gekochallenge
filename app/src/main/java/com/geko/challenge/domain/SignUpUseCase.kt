@@ -9,7 +9,7 @@ import javax.inject.Inject
 class SignUpUseCase @Inject constructor(
     private val authenticationRepository: AuthenticationRepository
 ) {
-    operator suspend fun invoke(
+    suspend operator fun invoke(
         firstName: String,
         lastName: String,
         email: String,
